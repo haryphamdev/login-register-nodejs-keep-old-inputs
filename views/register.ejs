@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Register Page</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+<body>
+<div class="container">
+    <div class="container">
+        <div class="row mt-5">
+            <div class="col-7 login-left">
+            </div>
+            <div class="col-5 mt-2">
+                <div>
+                    <% if(errors != "") { %>
+                        <% errors.forEach((item) => { %>
+                            <div class="alert alert-danger">
+                                <%- item %>
+                            </div>
+                        <% }); %>
+                    <% } %>
+                </div>
+                <form method="POST" action="/register">
+                    <div class="form-group">
+                        <label for="fullName">Full name:</label>            
+                        <input type="text" class="form-control" name="fullName" id="fullName" placeholder="Full name" value="<%=oldInput.full_name%>">
+
+                    <div class="form-group">
+                        <label for="display_name">Display Name: Spaces are not allowed. </label>
+                        <input type="display_name" name="display_name" class="form-control" id="display_name" value="<%= oldInput.display_name%>" placeholder="Enter Display Name" pattern="[^' ']+" >
+                    </div>
+                    <div class="form-group">
+                        <label for="birthday">Birthday: You must be at least 13 years old to be able to register.</label>
+                        <input type="date" id="birthday" name="birthday" value="<%= oldInput.birthday%>"  >
+                    </div>
+                    <div class="form-group">
+                        <label for="email_address">Email address: (*)</label>
+                        <input type="email_address" name="email_address" class="form-control" id="email_address" placeholder="Enter email" value="<%= oldInput.email_address%>">
+                    </div>
+                    <div class="form-group">
+                        <!-- <label for="password">Password: (*)</label>
+                        <input type="password" name="password" class="form-control" id="password" placeholder="Password" required> -->
+                        <label for="password">* Password (Must be 8 characters and include one uppercase, one lowercase and
+                            one numeric):</label><br/>
+                        <input type="password" name="password" class="form-control" id="password" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" >
+                        <input type="checkbox" onclick="myFunction()"> Show Password
+                    
+                    </div>
+                    <div class="form-group">
+                        <!-- <label for="passwordConfirmation">Confirm password: (*)</label>
+                        <input type="password" class="form-control" name="passwordConfirmation" id="passwordConfirmation" placeholder="Password Confirmation" required> -->
+                        <label for="passwordConfirmation">Confirm Password: </label><br/>
+                        <input type="password" class="form-control" name="passwordConfirmation" id="passwordConfirmation" >
+                        <input type="checkbox" onclick="myFunction2()"> Show Password
+                    
+                    </div>
+                    <button type="submit" class="btn btn-primary" onclick="getSelected()">Register</button>
+                </form>
+
+                <hr>
+                <div>
+                    If you already have an account. <a href="/login">Log in</a>.
+                </div>
+                <div>
+                    Return to <a href="/">Home Page</a>
+                </div>
+                <br><br>
+              
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+function myFunction() {
+  var x = document.getElementById("password");
+  if (x.type === "password") {
+    x.type = "text";
+  } else {
+    x.type = "password";
+  }
+}
+
+function myFunction2() {
+  var x = document.getElementById("passwordConfirmation");
+  if (x.type === "password") {
+    x.type = "text";
+  } else {
+    x.type = "password";
+  }
+}
+
+$(function(){
+        var dtToday = new Date();
+    
+        var month = dtToday.getMonth() + 1;// jan=0; feb=1 .......
+        var day = dtToday.getDate();
+        var year = dtToday.getFullYear() - 13;
+        if(month < 10)
+            month = '0' + month.toString();
+        if(day < 10)
+            day = '0' + day.toString();
+    	var minDate = year + '-' + month + '-' + day;
+        var maxDate = year + '-' + month + '-' + day;
+    	$('#birthday').attr('max', maxDate);
+    });
+
+
+    const usernameInput = document.querySelector('input[type="display_name"]');
+    usernameInput.addEventListener("input", function(e){
+    e.target.value = e.target.value.toLowerCase();
+    });
+</script>
+</body>
+</html>
